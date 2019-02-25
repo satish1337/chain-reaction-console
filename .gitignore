@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+veronica_log.*
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Additional Project Specific
+*.log
+*.sublime*
+
+# General Notes and Thoughts
+notes.txt
+
+.DS_Store
+env/
+
+# Pem files
+*.pem
+
+# Static folder
+# static/
+
+# csv files
+# *.csv
+
+*.sqlite3
+
+#emacs cruft
+*~
+*#*
+*.pyc
+
+dev_settings.py
+local.py
+test_settings.py
+
+# Pycharm
+.idea
+
+# virtualenv
+venv
