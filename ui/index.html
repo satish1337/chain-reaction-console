@@ -51,8 +51,6 @@
         return coordinates;
       }
 
-      function playerChoice() {}
-
       function initiateGameBoard() {
         var board = document.getElementById("board");
         for (var i = 0; i < 8; ++i) {
@@ -66,21 +64,14 @@
             square.style.height = "100px";
             let rowl = i;
             let coll = j;
-            // square.onclick = function (i, j) {
-            //   addBall(rowl, coll, player);
-            // };
             square.style.backgroundColor = "white";
+            square.style.verticalAlign = "top";
             var ball = document.createElement("SPAN");
-            // ball.style.backgroundColor = "#bbb";
             ball.style.display = "inline-block";
             ball.style.verticalAlign = "middle";
 
-            var textnode = document.createTextNode(".");
-            ball.style.color = "white";
             square.style.fontSize = "50px";
-            ball.append(textnode);
             square.append(ball);
-            // square.append(textnode);
             row.appendChild(square);
           }
 
