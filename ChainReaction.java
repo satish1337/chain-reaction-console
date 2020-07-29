@@ -11,6 +11,7 @@ public class ChainReaction{
 	String prompt_msg = "";
 	boolean engage = false;
 
+	// hello
 	ChainReactionGame game = new ChainReactionGame();
 	/* L: use instance methods of separate class rather than writing whole logic 
 	   in this class which strictly demands every method to be static. */

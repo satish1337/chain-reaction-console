@@ -1,0 +1,170 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+      var boardSize = [8, 10];
+      var players = ["red", "green"];
+      var currentPlayer = 0;
+
+      function startGame() {
+        counter = 0;
+        alert("starting game");
+
+        $(".cell").on("click", function () {
+          playerColor = players[currentPlayer];
+          let coordinates = getCellCoordinates(this.classList);
+          let cell = document.getElementsByClassName(
+            "row" + coordinates[0] + " col" + coordinates[1]
+          );
+          let balls = cell[0].getElementsByClassName("cell-ball");
+
+          if (balls.length > 0) {
+            if (balls[0].style.color !== playerColor) {
+              alert("invalid move");
+              return;
+            }
+          }
+
+          addBall(coordinates[0], coordinates[1], playerColor);
+          // TODO: check game is over
+          currentPlayer = (currentPlayer + 1) % players.length;
+          console.log("currentPlayer ", currentPlayer);
+        });
+      }
+
+      function getCellCoordinates(classList) {
+        coordinates = [];
+        for (let i = 0; i < classList.length; i++) {
+          if (classList.item(i).startsWith("row")) {
+            let row = classList.item(i).replace("row", "");
+            coordinates.push(parseInt(row));
+          }
+          if (classList.item(i).startsWith("col")) {
+            let row = classList.item(i).replace("col", "");
+            coordinates.push(parseInt(row));
+          }
+        }
+        console.log("clicked on ", coordinates);
+        return coordinates;
+      }
+
+      function playerChoice() {}
+
+      function initiateGameBoard() {
+        var board = document.getElementById("board");
+        for (var i = 0; i < 8; ++i) {
+          var row = document.createElement("DIV");
+          row.className = "row";
+          for (var j = 0; j < 10; ++j) {
+            var square = document.createElement("DIV");
+            square.className = "cell row" + i + " col" + j;
+            square.style.display = "inline-block";
+            square.style.width = "100px";
+            square.style.height = "100px";
+            let rowl = i;
+            let coll = j;
+            // square.onclick = function (i, j) {
+            //   addBall(rowl, coll, player);
+            // };
+            square.style.backgroundColor = "white";
+            var ball = document.createElement("SPAN");
+            // ball.style.backgroundColor = "#bbb";
+            ball.style.display = "inline-block";
+            ball.style.verticalAlign = "middle";
+
+            var textnode = document.createTextNode(".");
+            ball.style.color = "white";
+            square.style.fontSize = "50px";
+            ball.append(textnode);
+            square.append(ball);
+            // square.append(textnode);
+            row.appendChild(square);
+          }
+
+          board.appendChild(row);
+        }
+        startGame();
+      }
+
+      function addBall(row, col, playerColor) {
+        console.log(row, col);
+        cell = document.getElementsByClassName("row" + row + " col" + col);
+        let adjacentSides = computeAdjacent(row, col, boardSize);
+        console.log(adjacentSides);
+
+        balls = cell[0].getElementsByClassName("cell-ball");
+
+        //TODO add condition to prevent placement of ball on other players cell
+
+        if (adjacentSides.length === balls.length + 1) {
+          // cell reached its limit. time to explode.
+          parentNode = balls[0].parentNode;
+          let len = balls.length;
+          while (balls.length > 0) {
+            parentNode.removeChild(balls[0]);
+          }
+          for (let i = 0; i < adjacentSides.length; i++) {
+            let x = adjacentSides[i][0];
+            let y = adjacentSides[i][1];
+            addBall(x, y, playerColor);
+          }
+        } else {
+          // own existing balls
+          for (let i = 0; i < balls.length; i++) {
+            balls[i].style.color = playerColor;
+          }
+
+          var balle = document.createElement("SPAN");
+          balle.className = "cell-ball";
+          // ball.style.backgroundColor = "#bbb";
+          balle.style.display = "inline-block";
+          balle.style.verticalAlign = "middle";
+
+          var textnode = document.createTextNode("o");
+          balle.style.color = playerColor;
+          balle.append(textnode);
+          // square.style.fontSize = "50px";
+          cell[0].appendChild(balle);
+        }
+      }
+
+      function removeBall(row, col) {
+        console.log(row, col);
+        cell = document.getElementsByClassName("row" + row + " col" + col);
+        ball = cell[0].getElementsByClassName("cell-ball")[0];
+        console.log(ball, ball.parentNode);
+        parent = ball.parentNode;
+        ball.parentNode.removeChild(ball);
+      }
+
+      function computeAdjacent(row, col, boardSize) {
+        var left = [row, col - 1];
+        var top = [row - 1, col];
+        var right = [row, col + 1];
+        var down = [row + 1, col];
+        var allSides = [left, top, right, down];
+        adjacentSides = [];
+        for (i = 0; i < allSides.length; i++) {
+          side = allSides[i];
+          if (
+            side[0] >= 0 &&
+            side[0] < boardSize[0] &&
+            side[1] >= 0 &&
+            side[1] < boardSize[1]
+          ) {
+            adjacentSides.push(side);
+          }
+        }
+        return adjacentSides;
+      }
+
+      window.onload = initiateGameBoard;
+    </script>
+  </head>
+  <body>
+    <div class="game-board" id="board"></div>
+  </body>
+</html>
